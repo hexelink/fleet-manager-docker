@@ -7,6 +7,9 @@ services:
       - PUBLIC_ADDRESS=demo01.fleet.hexe.link # 服务器公网地址，IP或域名皆可
       - ADMIN_EMAIL=admin@fleet.demo # 系统管理员登录邮箱
       - ADMIN_PASSWORD=demopassword # 系统管理员首次登录密码
+      - APP_COMPANY_NAME=YourCompany # 公司名称
+      - APP_LOGIN_TITLE=LoginTitle # 登录页面标题
+      - APP_HEADER_TITLE=HeaderTitle # 页面顶部标题
     volumes:
       - ./data:/app/data
     network_mode: "host"
