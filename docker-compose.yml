@@ -1,28 +1,40 @@
-version: '3'
+version: "3"
 services:
   fleet-commander:
-    image: hexelink/fleet-commander:latest
+    image: hexelink/fleet-commander:1.5.0
     environment:
       - CAPTAIN_GRPC=127.0.0.1:8051
+      - LIAISON_GRPC=127.0.0.1:9051
       - PUBLIC_ADDRESS=demo01.fleet.hexe.link # 服务器公网地址，IP或域名皆可
       - ADMIN_EMAIL=admin@fleet.demo # 系统管理员登录邮箱
       - ADMIN_PASSWORD=demopassword # 系统管理员首次登录密码
       - APP_COMPANY_NAME=YourCompany # 公司名称
-      - APP_LOGIN_TITLE=LoginTitle # 登录页面标题
-      - APP_HEADER_TITLE=HeaderTitle # 页面顶部标题
+      - APP_LOGIN_TITLE=DemoLoginTitle # 登录页面标题
+      - APP_HEADER_TITLE=DemoHeaderTitle # 页面顶部标题
     volumes:
       - ./data:/app/data
     network_mode: "host"
     restart: on-failure
 
   fleet-captain:
-    image: hexelink/fleet-captain:latest
+    image: hexelink/fleet-captain:2.2.1
     privileged: true
     environment:
-     - WG_NAME=wg0 # WireGuard 端口名称
+      - WG_NAME=wg0
+      - WG_PORT=51820
     cap_add:
-      - ALL
+      - NET_ADMIN
+    network_mode: "host"
     volumes:
       - /etc/wireguard:/etc/wireguard
+    restart: on-failure
+
+  fleet-liaison:
+    image: hexelink/fleet-liaison:1.0.0
+    privileged: true
+    environment:
+      - WG_PORT_START=40000
+    cap_add:
+      - NET_ADMIN
     network_mode: "host"
     restart: on-failure
